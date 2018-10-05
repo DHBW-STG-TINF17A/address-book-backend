@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
-const express = require('express');
+const cors = require('cors');
 const db = require('mongoose');
+const express = require('express');
 
 const bookRoutes = require('./routes/bookRoutes');
 const contactRoutes = require('./routes/contactRoutes');
@@ -15,6 +16,8 @@ const port = 4000;
 // Connect to MongoDB.
 db.connect(dbPath);
 db.Promise = global.Promise;
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
