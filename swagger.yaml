@@ -1,0 +1,711 @@
+---
+swagger: "2.0"
+info:
+  description: "Address Book Back End Web Service for the Web Engineering II Exam\
+    \ Project at DHBW Stuttgart, Winter Term 2018/19"
+  version: "1.0.0"
+  title: "Address Book"
+  contact:
+    name: "Oliver Rudzinski (5481330)"
+    email: "inf17068@lehre.dhbw-stuttgart.de"
+host: "localhost:10010"
+tags:
+- name: "books"
+  description: "Entire Address Books"
+- name: "contact"
+  description: "Address Book Entries"
+- name: "groups"
+  description: "Groups"
+- name: "image"
+  description: "Image Handling"
+schemes:
+- "http"
+- "https"
+paths:
+  /books:
+    get:
+      tags:
+      - "books"
+      summary: "Retrieve all contact books"
+      operationId: "booksGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+      x-swagger-router-controller: "Books"
+    post:
+      tags:
+      - "books"
+      summary: "Create a new contact book"
+      operationId: "booksPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Book to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+      x-swagger-router-controller: "Books"
+  /books/{bookId}:
+    get:
+      tags:
+      - "books"
+      summary: "Retrieve a specific contact book"
+      operationId: "booksBookIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to retrieve"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Book"
+      x-swagger-router-controller: "Books"
+    put:
+      tags:
+      - "books"
+      summary: "Update an existing contact book"
+      operationId: "booksBookIdPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to update"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+      x-swagger-router-controller: "Books"
+    delete:
+      tags:
+      - "books"
+      summary: "Delete a specific contact book"
+      operationId: "booksBookIdDELETE"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "successful operation"
+      x-swagger-router-controller: "Books"
+  /{bookId}/contacts:
+    get:
+      tags:
+      - "contact"
+      summary: "Retrieve all available contact entries"
+      operationId: "bookIdContactsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to retrieve contacts from"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Contact"
+      x-swagger-router-controller: "Contact"
+    post:
+      tags:
+      - "contact"
+      summary: "Create a new contact"
+      operationId: "bookIdContactsPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to be added a contact to"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Contact to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/ContactCreate"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Contact"
+      x-swagger-router-controller: "Contact"
+  /{bookId}/contacts/{contactId}:
+    get:
+      tags:
+      - "contact"
+      summary: "Retrieve a specific contact"
+      operationId: "bookIdContactsContactIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to retrieve the specific contact from"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to retrieve"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Contact"
+      x-swagger-router-controller: "Contact"
+    put:
+      tags:
+      - "contact"
+      summary: "Update an existing contact"
+      operationId: "bookIdContactsContactIdPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book which gets a specific contact updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to update"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Contact"
+      x-swagger-router-controller: "Contact"
+    delete:
+      tags:
+      - "contact"
+      summary: "Delete an existing contact"
+      operationId: "bookIdContactsContactIdDELETE"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to be deleted a specific contact from"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "successful operation"
+      x-swagger-router-controller: "Contact"
+  /{bookId}/groups:
+    get:
+      tags:
+      - "groups"
+      summary: "Retrieve all available categories"
+      operationId: "bookIdGroupsGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to retrieve groups from"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Group"
+      x-swagger-router-controller: "Groups"
+    post:
+      tags:
+      - "groups"
+      summary: "Create a new group"
+      operationId: "bookIdGroupsPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to add a group to"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Group to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/GroupCreate"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Group"
+      x-swagger-router-controller: "Groups"
+  /{bookId}/groups/{groupId}:
+    get:
+      tags:
+      - "groups"
+      summary: "Retrieve a specific group"
+      operationId: "bookIdGroupsGroupIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to retrieve a specific group from"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "groupId"
+        in: "path"
+        description: "ID of group to retrieve"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Group"
+      x-swagger-router-controller: "Groups"
+    put:
+      tags:
+      - "groups"
+      summary: "Edit a specific group"
+      operationId: "bookIdGroupsGroupIdPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to get a specific group updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "groupId"
+        in: "path"
+        description: "ID of group to update"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Group to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/GroupCreate"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Group"
+      x-swagger-router-controller: "Groups"
+    delete:
+      tags:
+      - "groups"
+      summary: "Delete a specific group"
+      operationId: "bookIdGroupsGroupIdDELETE"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book to delete a specific group from"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "groupId"
+        in: "path"
+        description: "ID of group to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "successful operation"
+      x-swagger-router-controller: "Groups"
+  /{bookId}/groups/{groupId}/{contactId}:
+    post:
+      tags:
+      - "groups"
+      summary: "Assign a group to a contact"
+      operationId: "bookIdGroupsGroupIdContactIdPOST"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book which hosts group and contact"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "groupId"
+        in: "path"
+        description: "ID of group to assign"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to assign group to"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "successful operation"
+      x-swagger-router-controller: "Groups"
+    delete:
+      tags:
+      - "groups"
+      summary: "Remove a group from a contact"
+      operationId: "bookIdGroupsGroupIdContactIdDELETE"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "bookId"
+        in: "path"
+        description: "ID of book which hosts group and contact"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "groupId"
+        in: "path"
+        description: "ID of group to remove"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to remove group from"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "OK"
+      x-swagger-router-controller: "Groups"
+  /images/{contactId}:
+    post:
+      tags:
+      - "image"
+      summary: "Add an image to a contact"
+      operationId: "imagesContactIdPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to assign image to"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Contact to get image added"
+        required: true
+        schema:
+          $ref: "#/definitions/ImageCreate"
+      responses:
+        204:
+          description: "OK"
+      x-swagger-router-controller: "Image"
+    put:
+      tags:
+      - "image"
+      summary: "Update image of a specific contact"
+      operationId: "imagesContactIdPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to update (image)"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "Contact to be updated (image)"
+        required: true
+        schema:
+          $ref: "#/definitions/ImageCreate"
+      responses:
+        204:
+          description: "OK"
+      x-swagger-router-controller: "Image"
+    delete:
+      tags:
+      - "image"
+      summary: "Remove an image from a contact"
+      operationId: "imagesContactIdDELETE"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to delete image from"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "OK"
+      x-swagger-router-controller: "Image"
+definitions:
+  Book:
+    type: "object"
+    required:
+    - "color"
+    - "id"
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      color:
+        type: "string"
+    example:
+      color: "color"
+      name: "name"
+      id: 0
+  Contact:
+    type: "object"
+    required:
+    - "firstName"
+    - "groups"
+    - "id"
+    - "isFavorite"
+    - "lastName"
+    - "phoneNumber"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      alias:
+        type: "string"
+      phoneNumber:
+        type: "string"
+      eMailAddress:
+        type: "string"
+      address:
+        type: "string"
+      birthday:
+        type: "string"
+      company:
+        type: "string"
+      homepage:
+        type: "string"
+      groups:
+        type: "array"
+        items:
+          $ref: "#/definitions/Group"
+      isFavorite:
+        type: "boolean"
+      imageUrl:
+        type: "string"
+      extra:
+        type: "object"
+        properties: {}
+    example:
+      birthday: "birthday"
+      lastName: "lastName"
+      address: "address"
+      groups:
+      - name: "name"
+        id: 6
+      - name: "name"
+        id: 6
+      eMailAddress: "eMailAddress"
+      firstName: "firstName"
+      phoneNumber: "phoneNumber"
+      imageUrl: "imageUrl"
+      extra: "{}"
+      alias: "alias"
+      company: "company"
+      id: 0
+      homepage: "homepage"
+      isFavorite: true
+  ContactCreate:
+    type: "object"
+    required:
+    - "firstName"
+    - "lastName"
+    - "phoneNumber"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      alias:
+        type: "string"
+      phoneNumber:
+        type: "string"
+      eMailAddress:
+        type: "string"
+      address:
+        type: "string"
+      birthday:
+        type: "string"
+      company:
+        type: "string"
+      homepage:
+        type: "string"
+      groups:
+        type: "array"
+        items:
+          $ref: "#/definitions/ContactGroup"
+      isFavorite:
+        type: "boolean"
+      imageData:
+        type: "string"
+        format: "byte"
+        pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+      extra:
+        type: "object"
+        properties: {}
+    example:
+      birthday: "birthday"
+      lastName: "lastName"
+      address: "address"
+      imageData: "imageData"
+      groups:
+      - id: 0
+      - id: 0
+      eMailAddress: "eMailAddress"
+      firstName: "firstName"
+      phoneNumber: "phoneNumber"
+      extra: "{}"
+      alias: "alias"
+      company: "company"
+      homepage: "homepage"
+      isFavorite: true
+  ContactGroup:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+    example:
+      id: 0
+  Group:
+    type: "object"
+    required:
+    - "id"
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    example:
+      name: "name"
+      id: 6
+  GroupCreate:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      name:
+        type: "string"
+    example:
+      name: "name"
+  ImageCreate:
+    type: "object"
+    required:
+    - "imageData"
+    properties:
+      imageData:
+        type: "string"
+        format: "byte"
+        pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+    example:
+      imageData: "imageData"
