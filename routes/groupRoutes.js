@@ -1,30 +1,29 @@
 const express = require('express');
-const Contact = require('../models/contact');
 const Group = require('../models/group');
 
 const router = express.Router();
 
 // Retrieve all book-related groups from the data base.
 router.get('/:bookId/groups', (req, res, next) => {
-    Group.find({}).then((groups) => {
-      res.send(groups);
-    }).catch(next);
-  });
-  
+  Group.find({}).then((groups) => {
+    res.send(groups);
+  }).catch(next);
+});
+
 // Retrieve a specific book-related group from the data base.
 router.get('/:bookId/groups/:groupId', (req, res, next) => {
   Group.findOne({ _id: req.params.groupId }).then((group) => {
     res.send(group);
   }).catch(next);
 });
-  
+
 // Create a book-related group and save it inside the data base.
 router.post('/:bookId/groups', (req, res, next) => {
   Group.create(req.body).then((group) => {
     res.send(group);
   }).catch(next);
 });
-  
+
 // Update a specific book-related group inside the data base.
 router.put('/:bookId/groups/:groupId', (req, res, next) => {
   Group.findByIdAndUpdate({ _id: req.params.groupId }, req.body).then(() => {
@@ -33,7 +32,7 @@ router.put('/:bookId/groups/:groupId', (req, res, next) => {
     });
   }).catch(next);
 });
-  
+
 // Delete a specific book-related group from the data base.
 router.delete('/:bookId/groups/:groupId', (req, res, next) => {
   Group.findByIdAndRemove({ _id: req.params.groupId }).then((group) => {
@@ -41,7 +40,7 @@ router.delete('/:bookId/groups/:groupId', (req, res, next) => {
   }).catch(next);
 });
 
-// Not working.
+/* // Not working.
 // Add a group to a contact.
 router.post('/:bookId/groups/:groupId/:contactId', (req, res, next) => {
   Contact.findById({ _id: req.params.contactId }).then((contact) => {
@@ -59,6 +58,6 @@ router.post('/:bookId/groups/:groupId/:contactId', (req, res, next) => {
       }
     });
   });
-});
-        
+}); */
+
 module.exports = router;

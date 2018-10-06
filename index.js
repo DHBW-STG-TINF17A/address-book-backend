@@ -6,6 +6,7 @@ const express = require('express');
 const bookRoutes = require('./routes/bookRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const groupRoutes = require('./routes/groupRoutes');
+const imageRoutes = require('./routes/imageRoutes');
 
 const app = express();
 
@@ -19,19 +20,22 @@ db.Promise = global.Promise;
 
 app.use(cors());
 
+app.use(express.static('uploads'));
+
 app.use(bodyParser.json());
 
 // Initialize routes.
 app.use(routePrefix, bookRoutes);
 app.use(routePrefix, contactRoutes);
-app.use(routePrefix, groupRoutes)
+app.use(routePrefix, groupRoutes);
+app.use(routePrefix, imageRoutes);
 
 // Error handling middleware.
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.status(422).send({ error: err.message });
 });
 
 // Listen for requests.
 app.listen(process.env.PORT || port, () => {
-  console.log('Listening for requests...');
+  console.log(`Listening for requests at port ${port}...`);
 });
