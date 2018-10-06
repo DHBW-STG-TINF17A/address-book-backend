@@ -32,7 +32,7 @@ app.use(routePrefix, imageRoutes);
 
 // Error handling middleware.
 app.use((err, req, res) => {
-  res.status(422).send({ error: err.message });
+  res.send({ error: err.message });
 });
 
 // Listen for requests.

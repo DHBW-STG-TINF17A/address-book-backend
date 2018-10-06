@@ -14,7 +14,6 @@ const storage = multer.diskStorage({
 });
 
 const router = express.Router();
-
 const upload = multer({ storage });
 
 // Upload an image and save it to the file system.
@@ -24,9 +23,9 @@ router.post('/images/:contactId', upload.single('image'), (req, res, next) => {
     contact.update({ imageUrl: req.file.path }).then(() => {
       Contact.findOne({ _id: req.params.contactId }).then((contactWithImage) => {
         res.send(contactWithImage);
-      })
+      });
     });
-  });
+  }).catch(next);
 });
 
 router.delete('/images/:contactId', (req, res, next) => {
@@ -37,7 +36,7 @@ router.delete('/images/:contactId', (req, res, next) => {
         res.send(contactWithoutImage);
       });
     });
-  });
+  }).catch(next);
 });
 
 module.exports = router;
