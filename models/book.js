@@ -22,6 +22,9 @@ const BookSchema = new Schema({
       message: 'Provided hex color code is invalid.',
     },
   },
+  contacts: {
+    type: [String],
+  },
 });
 
 const Book = mongoose.model('book', BookSchema);
