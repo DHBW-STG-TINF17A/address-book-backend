@@ -15,7 +15,7 @@ const routePrefix = '/api';
 const port = 4000;
 
 // Connect to MongoDB.
-db.connect(dbPath);
+db.connect(dbPath, { useNewUrlParser: true });
 db.Promise = global.Promise;
 
 app.use(cors());
@@ -37,5 +37,5 @@ app.use((err, req, res) => {
 
 // Listen for requests.
 app.listen(process.env.PORT || port, () => {
-  console.log(`Listening for requests at port ${port}...`);
+  console.log(`Listening for requests on port ${port}...`);
 });

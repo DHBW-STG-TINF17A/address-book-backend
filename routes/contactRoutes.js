@@ -5,23 +5,27 @@ const Contact = require('../models/contact');
 
 const router = express.Router();
 
-// Retrieve all books from the data base.
+// Retrieve all book-specific contacts from the data base.
 router.get('/:bookId/contacts', (req, res, next) => {
   Book.findOne({ _id: req.params.bookId }).then((book) => {
-    const bookContacts = book.contacts;
     let contacts = [];
     let counter = 0;
-    bookContacts.forEach((contactId) => {
-      Contact.findOne({ _id: contactId }).then((contact) => {
-        console.log(contactId);
-        contacts.push(contact);
-        counter++;
-        if (counter === bookContacts.length) {
-          res.send(contacts);
-        }
+    if (book.contacts.length !== 0) {
+      book.contacts.forEach((contactId) => {
+        Contact.findOne({ _id: contactId }).then((contact) => {
+          contacts.push(contact);
+          counter += 1;
+          if (counter === book.contacts.length) {
+            if (book.contacts.length !== 0) {
+              res.send(contacts);
+            }
+          }
+        });
       });
-    });
-  });
+    } else {
+      res.send([]);
+    }
+  }).catch(next);
 });
 
 // Retrieve a specific contact from the data base.
@@ -35,13 +39,7 @@ router.get('/:bookId/contacts/:contactId', (req, res, next) => {
 router.post('/:bookId/contacts', (req, res, next) => {
   Contact.create(req.body).then((contact) => {
     Book.findOne({ _id: req.params.bookId }).then((book) => {
-      let currentContactIds = book.contacts;
-      console.log(book.contacts);
-      let contactId = contact._id;
-      let newContactIds = currentContactIds.concat(contactId);
-      console.log(contactId);
-
-      book.update({ contacts: newContactIds }).then(() => {
+      book.update({ contacts: book.contacts.concat(contact._id) }).then(() => {
         res.send(contact);
       });
     });
@@ -51,11 +49,12 @@ router.post('/:bookId/contacts', (req, res, next) => {
 
 // Update a specific book inside the data base.
 router.put('/:bookId/contacts/:contactId', (req, res, next) => {
-  Contact.findByIdAndUpdate({ _id: req.params.contactId }, req.body).then(() => {
-    Contact.findOne({ _id: req.params.contactId }).then((contact) => {
-      res.send(contact);
-    });
-  }).catch(next);
+  Contact.findOneAndUpdate({ _id: req.params.contactId }, { runValidators: true }, req.body)
+    .then(() => {
+      Contact.findOne({ _id: req.params.contactId }).then((contact) => {
+        res.send(contact);
+      });
+    }).catch(next);
 });
 
 // Delete a specific book from the data base.

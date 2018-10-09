@@ -26,11 +26,12 @@ router.post('/:bookId/groups', (req, res, next) => {
 
 // Update a specific book-related group inside the data base.
 router.put('/:bookId/groups/:groupId', (req, res, next) => {
-  Group.findByIdAndUpdate({ _id: req.params.groupId }, req.body).then(() => {
-    Group.findOne({ _id: req.params.groupId }).then((group) => {
-      res.send(group);
-    });
-  }).catch(next);
+  Group.findOneAndUpdate({ _id: req.params.groupId }, { runValidators: true }, req.body)
+    .then(() => {
+      Group.findOne({ _id: req.params.groupId }).then((group) => {
+        res.send(group);
+      });
+    }).catch(next);
 });
 
 // Delete a specific book-related group from the data base.

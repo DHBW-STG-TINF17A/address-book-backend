@@ -9,12 +9,33 @@ const storage = multer.diskStorage({
     cb(null, './uploads/');
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    switch (file.mimetype) {
+      case 'image/jpeg':
+        cb(null, `${file.filename}.jpg`);
+        break;
+      case 'image/png':
+        cb(null, `${file.filename}.png`);
+        break;
+      default:
+        cb(new Error('PNG or JPEG file required.'));
+    }
   },
 });
 
 const router = express.Router();
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype !== ('image/png' || 'image/jpeg')) {
+      req.fileValidationError = 'Expected PNG or JPEG file.';
+      cb(null, false, new Error('Exprected PNG or JPEG file.'));
+    }
+    cb(null, true);
+  },
+  limits: {
+    fileSize: 1024 * 1024 * 2,
+  },
+});
 
 // Upload an image and save it to the file system.
 router.post('/images/:contactId', upload.single('image'), (req, res, next) => {
@@ -28,6 +49,7 @@ router.post('/images/:contactId', upload.single('image'), (req, res, next) => {
   }).catch(next);
 });
 
+// Delete an image from the file system and unlink it from the corresponding contact.
 router.delete('/images/:contactId', (req, res, next) => {
   Contact.findOne({ _id: req.params.contactId }).then((contact) => {
     fs.unlinkSync(contact.imageUrl);
