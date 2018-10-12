@@ -28,7 +28,7 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== ('image/png' || 'image/jpeg')) {
       req.fileValidationError = 'Expected PNG or JPEG file.';
-      cb(null, false, new Error('Exprected PNG or JPEG file.'));
+      cb(null, false, new Error('Expected PNG or JPEG file.'));
     }
     cb(null, true);
   },

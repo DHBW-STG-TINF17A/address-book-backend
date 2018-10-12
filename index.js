@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('mongoose');
 const express = require('express');
+const validator = require('express-validator');
 
 const bookRoutes = require('./routes/bookRoutes');
 const contactRoutes = require('./routes/contactRoutes');
@@ -23,6 +24,8 @@ app.use(cors());
 app.use(express.static('uploads'));
 
 app.use(bodyParser.json());
+
+app.use(validator());
 
 // Initialize routes.
 app.use(routePrefix, bookRoutes);
