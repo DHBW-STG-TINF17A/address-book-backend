@@ -8,18 +8,20 @@ const router = express.Router();
 
 const postValidation = [
   check('name')
-    .not().isEmpty()
-    .isLength({ min: 1, max: 20 }),
+    .not().isEmpty().withMessage('Book name must not be empty')
+    .isLength({ min: 1, max: 20 })
+    .withMessage('Book name must contain between 1 and 20 characters'),
   check('color')
-    .not().isEmpty()
-    .matches(/^#([A-Fa-f0-9]{6})$/),
+    .not().isEmpty().withMessage('Book color must not be empty')
+    .matches(/^#([A-Fa-f0-9]{6})$/)
+    .withMessage('Book color must be provided as Hex Code'),
 ];
 
 const putValidation = [
   check('name')
-    .isLength({ min: 1, max: 20 }),
+    .isLength({ min: 1, max: 20 }).withMessage('Book name must contain between 1 and 20 characters'),
   check('color')
-    .matches((/^#([A-Fa-f0-9]{6})$/)),
+    .matches((/^#([A-Fa-f0-9]{6})$/)).withMessage('Book color must be provided as Hex Code'),
 ];
 
 // Retrieve all books from the data base.

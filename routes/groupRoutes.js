@@ -8,13 +8,14 @@ const router = express.Router();
 
 const postValidation = [
   check('name')
-    .not().isEmpty()
-    .isLength({ min: 1, max: 20 }),
+    .not().isEmpty().withMessage('Group name must not be empty')
+    .isLength({ min: 1, max: 20 })
+    .withMessage('Group name must contain between 1 and 20 characters'),
 ];
 
 const putValidation = [
   check('name')
-    .isLength({ min: 1, max: 20 }),
+    .isLength({ min: 1, max: 20 }).withMessage('Group name must contain between 1 and 20 characters'),
 ];
 
 // Retrieve all book-related groups from the data base.

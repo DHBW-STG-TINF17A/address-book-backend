@@ -11,59 +11,65 @@ const yyyymmdd = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
 
 const postValidation = [
   check('firstName')
-    .not().isEmpty()
-    .isLength({ min: 1, max: 30 }),
+    .not().isEmpty().withMessage('First name must not be empty')
+    .isLength({ min: 1, max: 30 })
+    .withMessage('First name must contain between 1 and 30 characters'),
   check('lastName')
-    .not().isEmpty()
-    .isLength({ min: 1, max: 50 }),
+    .not().isEmpty().withMessage('Last name must not be empty')
+    .isLength({ min: 1, max: 50 })
+    .withMessage('Last name must contain between 1 and 20 characters'),
   check('alias')
     .isLength({ max: 20 }),
   check('phoneNumber')
-    .not().isEmpty()
-    .matches(phoneNumberFormat),
+    .not().isEmpty().withMessage('Phone number must not be empty')
+    .matches(phoneNumberFormat)
+    .withMessage('Phone Number is not valid'),
   check('eMailAddress')
-    .isEmail(),
+    .isEmail().withMessage('E-Mail address is not valid'),
   check('address1')
-    .isLength({ max: 80 }),
+    .isLength({ max: 80 }).withMessage('Address line can only contain up to 80 characters'),
   check('address2')
-    .isLength({ max: 80 }),
+    .isLength({ max: 80 }).withMessage('Address line can only contain up to 80 characters'),
   check('birthday')
-    .matches(yyyymmdd),
+    .matches(yyyymmdd).withMessage('Date is not valid'),
   check('company')
-    .isLength({ max: 40 }),
+    .isLength({ max: 40 }).withMessage('Company name can only contain up to 40 characters'),
   check('homepage')
-    .isURL(),
+    .isURL().withMessage('Homepage is not a valid URL'),
   check('imageUrl')
-    .isBase64(),
+    .isBase64().withMessage('Image is not a valid Base64'),
   check('isFavorite')
-    .isBoolean(),
+    .isBoolean().withMessage('Favorite flag must be of boolean value'),
 ];
 
 const putValidation = [
   check('firstName')
-    .isLength({ min: 1, max: 30 }),
+    .isLength({ min: 1, max: 30 })
+    .withMessage('First name must contain between 1 and 30 characters'),
   check('lastName')
-    .isLength({ min: 1, max: 50 }),
+    .isLength({ min: 1, max: 50 })
+    .withMessage('Last name must contain between 1 and 20 characters'),
   check('alias')
     .isLength({ max: 20 }),
   check('phoneNumber')
-    .matches(/^[\s()+-]*([0-9][\s()+-]*){6,20}$/),
+    .matches(phoneNumberFormat)
+    .withMessage('Phone Number is not valid'),
   check('eMailAddress')
-    .isEmail(),
+    .isEmail().withMessage('E-Mail address is not valid'),
   check('address1')
-    .isLength({ max: 80 }),
+    .isLength({ max: 80 }).withMessage('Address line can only contain up to 80 characters'),
   check('address2')
-    .isLength({ max: 80 }),
+    .isLength({ max: 80 }).withMessage('Address line can only contain up to 80 characters'),
   check('birthday')
-    .matches(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/),
+    .matches(yyyymmdd).withMessage('Date is not valid'),
   check('company')
-    .isLength({ max: 40 }),
+    .isLength({ max: 40 }).withMessage('Company name can only contain up to 40 characters'),
   check('homepage')
-    .isURL(),
+    .isURL().withMessage('Homepage is not a valid URL'),
   check('imageUrl')
-    .isBase64(),
+    .isBase64().withMessage('Image is not a valid Base64'),
   check('isFavorite')
-    .isBoolean(),
+    .isBoolean().withMessage('Favorite flag must be of boolean value'),
 ];
 
 // Retrieve all book-specific contacts from the data base.
