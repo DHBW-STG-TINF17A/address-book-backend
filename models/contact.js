@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
+const shortId = require('shortid');
+
 const GroupSchema = require('./groupSchema');
 
 const { Schema } = mongoose;
 
 // Create Contact schema and model.
 const ContactSchema = new Schema({
+  _id: {
+    type: String,
+    default: shortId.generate,
+  },
   firstName: {
     length: 30,
     type: String,

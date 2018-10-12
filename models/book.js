@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
+const shortId = require('shortid');
 
 const { Schema } = mongoose;
 
 // Create Book schema and model.
 const BookSchema = new Schema({
+  _id: {
+    type: String,
+    default: shortId.generate,
+  },
   name: {
     // minlength: 1,
     // maxlength: 20,

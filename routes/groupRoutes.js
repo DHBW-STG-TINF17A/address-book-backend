@@ -61,6 +61,8 @@ router.post('/:bookId/groups', postValidation, (req, res, next) => {
       });
     });
   }).catch(next);
+
+  return 0;
 });
 
 // Update a specific book-related group inside the data base.
@@ -76,6 +78,8 @@ router.put('/:bookId/groups/:groupId', putValidation, (req, res, next) => {
         res.send(group);
       });
     }).catch(next);
+
+  return 0;
 });
 
 // Delete a specific book-related group from the data base.

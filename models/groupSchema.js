@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
+const shortId = require('shortid');
 
 const { Schema } = mongoose;
 
 // Create Book schema and model.
 const GroupSchema = new Schema({
-  name: {
-    length: 20,
+  _id: {
     type: String,
-    required: [true, 'Name field is required.'],
+    default: shortId.generate,
   },
+  name: { type: String },
 });
 
 module.exports = GroupSchema;
