@@ -25,6 +25,9 @@ const BookSchema = new Schema({
   contacts: {
     type: [String],
   },
+  groups: {
+    type: [String],
+  },
 });
 
 const Book = mongoose.model('book', BookSchema);
