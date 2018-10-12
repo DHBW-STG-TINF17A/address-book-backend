@@ -7,7 +7,6 @@ const validator = require('express-validator');
 const bookRoutes = require('./routes/bookRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const groupRoutes = require('./routes/groupRoutes');
-const imageRoutes = require('./routes/imageRoutes');
 
 const app = express();
 
@@ -23,7 +22,7 @@ app.use(cors());
 
 app.use(express.static('uploads'));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '4mb' }));
 
 app.use(validator());
 
@@ -31,7 +30,6 @@ app.use(validator());
 app.use(routePrefix, bookRoutes);
 app.use(routePrefix, contactRoutes);
 app.use(routePrefix, groupRoutes);
-app.use(routePrefix, imageRoutes);
 
 // Error handling middleware.
 app.use((err, req, res) => {
