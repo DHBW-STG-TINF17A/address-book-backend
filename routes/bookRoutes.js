@@ -9,7 +9,7 @@ const router = express.Router();
 const postValidation = [
   check('name')
     .not().isEmpty()
-    .isLength({ max: 20 }),
+    .isLength({ min: 1, max: 20 }),
   check('color')
     .not().isEmpty()
     .matches(/^#([A-Fa-f0-9]{6})$/),
