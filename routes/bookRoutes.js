@@ -1,12 +1,17 @@
 const express = require('express');
-const validationResult = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 
 const Book = require('../models/book');
 const Contact = require('../models/contact');
 
-const bookValidation = require('../validations/bookValidation');
-
 const router = express.Router();
+
+const bookValidation = [
+  check('name')
+    .isLength({ min: 1, max: 20 }).withMessage('Book name must contain between 1 and 20 characters'),
+  check('color')
+    .matches((/^#([A-Fa-f0-9]{6})$/)).withMessage('Book color must be provided as Hex Code'),
+];
 
 // Retrieve all books from the data base.
 router.get('/books', (req, res, next) => {

@@ -1,12 +1,16 @@
 const express = require('express');
-const validationResult = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 
 const Book = require('../models/book');
 const Group = require('../models/group');
 
-const groupValidation = require('../validations/groupValidation');
-
 const router = express.Router();
+
+const groupValidation = [
+  check('name')
+    .isLength({ min: 1, max: 20 })
+    .withMessage('Group name must contain between 1 and 20 characters'),
+];
 
 // Retrieve all book-related groups from the data base.
 router.get('/:bookId/groups', (req, res, next) => {
