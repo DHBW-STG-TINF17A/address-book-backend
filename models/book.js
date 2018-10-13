@@ -18,7 +18,7 @@ const BookSchema = new Schema({
   color: {
     type: String,
     // required: [true, 'Color field is required.'],
-    // default: '#D3D3D3',
+    default: '#D3D3D3',
     // validate: {
     //   validator: (v) => {
     //     const hexPattern = /^#([A-Fa-f0-9]{6})$/;

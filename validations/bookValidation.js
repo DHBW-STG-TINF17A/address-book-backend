@@ -1,6 +1,6 @@
 const check = require('express-validator/check');
 
-exports.validation = [
+const validation = [
   check('name')
     .isLength({ min: 1, max: 20 }).withMessage('Book name must contain between 1 and 20 characters'),
   check('color')
