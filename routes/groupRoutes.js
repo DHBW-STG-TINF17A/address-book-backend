@@ -1,19 +1,10 @@
-const express = require('express');
-const { check, validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator/check');
 
 const Book = require('../models/book');
 const Group = require('../models/group');
 
-const router = express.Router();
-
-const groupValidation = [
-  check('name')
-    .isLength({ min: 1, max: 20 })
-    .withMessage('Group name must contain between 1 and 20 characters'),
-];
-
 // Retrieve all book-related groups from the data base.
-router.get('/:bookId/groups', (req, res, next) => {
+function getGroups(req, res, next) {
   Book.findOne({ _id: req.params.bookId }).then((book) => {
     let groups = [];
     let counter = 0;
@@ -33,17 +24,17 @@ router.get('/:bookId/groups', (req, res, next) => {
       res.send([]);
     }
   }).catch(next);
-});
+}
 
 // Retrieve a specific book-related group from the data base.
-router.get('/:bookId/groups/:groupId', (req, res, next) => {
+function getGroup(req, res, next) {
   Group.findOne({ _id: req.params.groupId }).then((group) => {
     res.send(group);
   }).catch(next);
-});
+}
 
 // Create a book-related group and save it inside the data base.
-router.post('/:bookId/groups', groupValidation, (req, res, next) => {
+function createGroup(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).send({ errors: errors.array() });
@@ -58,10 +49,10 @@ router.post('/:bookId/groups', groupValidation, (req, res, next) => {
   }).catch(next);
 
   return 0;
-});
+}
 
 // Update a specific book-related group inside the data base.
-router.put('/:bookId/groups/:groupId', groupValidation, (req, res, next) => {
+function updateGroup(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).send({ errors: errors.array() });
@@ -75,33 +66,15 @@ router.put('/:bookId/groups/:groupId', groupValidation, (req, res, next) => {
     }).catch(next);
 
   return 0;
-});
+}
 
 // Delete a specific book-related group from the data base.
-router.delete('/:bookId/groups/:groupId', (req, res, next) => {
+function deleteGroup(req, res, next) {
   Group.findByIdAndRemove({ _id: req.params.groupId }).then((group) => {
     res.send(group);
   }).catch(next);
-});
+}
 
-/* // Not working.
-// Add a group to a contact.
-router.post('/:bookId/groups/:groupId/:contactId', (req, res, next) => {
-  Contact.findById({ _id: req.params.contactId }).then((contact) => {
-    console.log(contact);
-    var currentGroups = contact.groups;
-    console.log(contact.groups);
-    Group.findById({ _id: req.params.groupId }).then((group) => {
-      console.log(group)
-      if (currentGroups.includes(group) === false) {
-      contact.update({ groups: currentGroups.concat(group) }).then(() => {
-        Contact.findOne({ _id: req.params.contactId }).then((updatedContact) => {
-          res.send(updatedContact);
-        });
-      });
-      }
-    });
-  });
-}); */
-
-module.exports = router;
+module.exports = {
+  getGroups, getGroup, createGroup, updateGroup, deleteGroup,
+};

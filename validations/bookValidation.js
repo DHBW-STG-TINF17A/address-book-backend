@@ -1,10 +1,26 @@
-const check = require('express-validator/check');
+const { check } = require('express-validator/check');
 
-const validation = [
+const hexColorFormat = /^#([A-Fa-f0-9]{6})$/;
+
+const post = [
   check('name')
     .isLength({ min: 1, max: 20 }).withMessage('Book name must contain between 1 and 20 characters'),
   check('color')
-    .matches((/^#([A-Fa-f0-9]{6})$/)).withMessage('Book color must be provided as Hex Code'),
+    .matches(hexColorFormat).withMessage('Book color must be provided as Hex Code'),
 ];
 
-module.exports = validation;
+const put = [
+  check('name')
+    .custom((value) => {
+      const v = (value === '' || value === undefined || (value.length >= 1 && value.length <= 20));
+      return v;
+    })
+    .withMessage('Book name must contain between 1 and 20 characters'),
+  check('color')
+    .custom((value) => {
+      const v = (value === '' || value === undefined || value.match(hexColorFormat));
+      return v;
+    }).withMessage('Book color must be provided as Hex Code'),
+];
+
+module.exports = { put, post };
