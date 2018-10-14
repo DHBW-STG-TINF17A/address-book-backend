@@ -1,5 +1,18 @@
+/**
+ *  @fileOverview Contact book-related unit testing.
+ *
+ *  @author       Oliver Rudzinski <inf17068@lehre.dhbw-stuttgart.de>
+ *
+ *  @requires     NPM:chai Unit testing.
+ *  @requires     NPM:chai-http Unit testing.
+ *  @requires     ../index Server.
+ *  @requires     ../models/book Contact book data model.
+ */
+
+// Set developer mode.
 process.env.NODE_ENV = 'test';
 
+// Import external modules.
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
@@ -65,16 +78,16 @@ describe('Books', () => {
   it('should not update a contact with an invalid color code on /books/<bookId> PUT', (done) => {
     chai.request(server)
       .get('/api/books')
-      .end((err, res) => {
+      .end((err, res1) => {
         chai.request(server)
-          .put(`/api/books/${res.body[0]._id}`)
+          .put(`/api/books/${res1.body[0]._id}`)
           .send({ color: '#ABCDEFG' }) // not valid hex code
-          .end((err, res) => {
-            res.should.have.status(422);
-            res.should.be.a('object');
-            res.body.should.have.property('errors');
-            res.body.errors.should.be.a('array');
-            res.body.errors[1].should.have.property('param').eql('color');
+          .end((err, res2) => {
+            res2.should.have.status(422);
+            res2.should.be.a('object');
+            res2.body.should.have.property('errors');
+            res2.body.errors.should.be.a('array');
+            res2.body.errors[0].should.have.property('param').eql('color');
             done();
           });
       });

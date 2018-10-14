@@ -1,3 +1,20 @@
+/**
+ *  @fileOverview Full stack Contact Book Managing Web Application.
+ *                Front End by Phillip Kiele.
+ *                Back End by Oliver Rudzinski.
+ *                DHBW Stuttgart - Web Engineering II - Examination Project.
+ *
+ *  @author       Oliver Rudzinski <inf17068@lehre.dhbw-stuttgart.de>
+ *  @author       Phillip Kiele
+ *
+ *  @requires     NPM:express-validator/body-parser Middleware for JSON body parsing.
+ *  @requires     NPM:config Setting up different environments (testing and development).
+ *  @requires     NPM:cors Middleware for solving the CORS issue.
+ *  @requires     NPM:express Web Framework.
+ *  @requires     NPM:mongoose Data Base Management.
+ */
+
+// Import external modules.
 const bodyParser = require('body-parser');
 const config = require('config');
 const cors = require('cors');
